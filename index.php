@@ -24,20 +24,20 @@
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-	<head>
+    <head>
         <title>Réservation de la base de scoutisme de Praléron en Isère</title>
         <style>
-			iframe {
+            iframe {
                 width: 100%;
                 min-height: 500px;
             }
-		</style>
-	</head>
-	<body>
+        </style>
+    </head>
+    <body>
         Vous pouvez voir sur la carte ci-dessous les différents terrains de la base. Cliquez sur un terrain pour obtenir ses caractéristiques et des photos.
         <iframe src="https://www.google.com/maps/d/embed?mid=11LLfJuTQQ8zbx_HFWDCfFZ0LHrs"></iframe>
 
-		<br />
+        <br />
         Je veux connaître les disponibilités d'un terrain
         <br />
         Je cherche un terrain disponible à une date précise
