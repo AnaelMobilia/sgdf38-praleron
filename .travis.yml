@@ -1,17 +1,11 @@
 language: php
 
+php:
+  - '5.6'
+
 before_script:
   - pyrus install pear/PHP_CodeSniffer
   - phpenv rehash
 
 script:
   - phpcs -p --standard=.phpcs-rules.xml . --ignore=/PHPExcel/
-
-matrix:
-  include:
-    - php: 5.6
-    - php: 7.0
-    - php: 7.1
-    - php: nightly
-  allow_failures:
-    - php: nightly
