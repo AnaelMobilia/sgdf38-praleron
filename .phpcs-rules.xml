@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="glpi">
-    <description>GLPI Coding standard</description>
-
-    <!-- use http://edorian.github.io/php-coding-standard-generator/#phpcs -->
-
+<ruleset>
     <!-- white spaces at end of line or empty line have spaces -->
     <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace" />
 
@@ -29,9 +25,6 @@
     <!--  Disallows the use of any deprecated functions -->
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
 
-    <!--  Makes sure that shorthand PHP open tags are not used. -->
-    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
-
     <!--  Checks that no perl-style comments (#) are used. -->
     <rule ref="PEAR.Commenting.InlineComment"/>
 
@@ -55,9 +48,6 @@
 
     <!-- Ensures that $this is not used in static methods -->
     <rule ref="Squiz.Scope.StaticThisUsage"/>
-
-    <!-- TODO disallow the direct usage of $_REQUEST, $_GET, $_POST and $_FILES -->
-    <!-- <rule ref="MySource.PHP.GetRequestData"/> -->
 
     <!-- White space after IF, ELSE, FOREACH, SWITCH keyword -->
     <rule ref="Squiz.ControlStructures.ControlSignature" />
