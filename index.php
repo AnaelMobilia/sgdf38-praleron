@@ -40,22 +40,14 @@ require './config.php';
         <iframe src="https://www.google.com/maps/d/embed?mid=11LLfJuTQQ8zbx_HFWDCfFZ0LHrs"></iframe>
 
         <br />
-        Les dates de mon camp sont du &nbsp;
+        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get">
+            Les dates de mon camp sont du &nbsp;
         <?= getListeJours('jourDeb') ?>
         <?= getListeMois('moisDeb') ?>
         &nbsp;au&nbsp;
         <?= getListeJours('jourFin') ?>
         <?= getListeMois('moisFin') ?>
+        <input type="submit" value="Voir les terrains disponibles" />
+        </form>
     </body>
 </html>
-
-<?php
-
-/** Include PHPExcel */
-
-
-// Chargement du fichier
-$objPHPExcel = PHPExcel_IOFactory::load(__FILE_FQDN__);
-// Pointeur sur ma sheet
-$actWorkSheet = $objPHPExcel->getActiveSheet();
-echo $actWorkSheet->getCell('A1')->getValue();
