@@ -33,3 +33,5 @@ define('__FILE_KEY__', '0AoFkkLP2MB8kdFd4bEJ5VzR2RVdBQkVuSW91WE1zZkE');
 define('__URL_TELECHARGEMENT__', 'https://docs.google.com/spreadsheets/d/' . __FILE_KEY__ . '/export?format=xlsx&id=' . __FILE_KEY__);
 // PATH FQDN du fihier sur le serveur
 define('__FILE_FQDN__', 'datas/' . __FILE_KEY__);
+
+require 'functions.php';

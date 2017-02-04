@@ -21,6 +21,8 @@
  * @author Anael Mobilia
  * @brief Affichage de la base
  */
+require './PHPExcel/PHPExcel.php';
+require './config.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,21 +36,23 @@
         </style>
     </head>
     <body>
-        Vous pouvez voir sur la carte ci-dessous les différents terrains de la base. Cliquez sur un terrain pour obtenir ses caractéristiques et des photos.
+        Cliquez sur un terrain pour obtenir ses caractéristiques et des photos.
         <iframe src="https://www.google.com/maps/d/embed?mid=11LLfJuTQQ8zbx_HFWDCfFZ0LHrs"></iframe>
 
         <br />
-        Je veux connaître les disponibilités d'un terrain
-        <br />
-        Je cherche un terrain disponible à une date précise
+        Les dates de mon camp sont du &nbsp;
+        <?= getListeJours('jourDeb') ?>
+        <?= getListeMois('moisDeb') ?>
+        &nbsp;au&nbsp;
+        <?= getListeJours('jourFin') ?>
+        <?= getListeMois('moisFin') ?>
     </body>
 </html>
 
 <?php
 
 /** Include PHPExcel */
-require './PHPExcel/PHPExcel.php';
-require './config.php';
+
 
 // Chargement du fichier
 $objPHPExcel = PHPExcel_IOFactory::load(__FILE_FQDN__);
