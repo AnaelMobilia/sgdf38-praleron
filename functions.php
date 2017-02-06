@@ -124,8 +124,8 @@ function getListeMois($nomInput) {
 
 /**
  * Terrains disponibles aux dates fournies
- * @param DateTime $debut Date de début
- * @param DateTime $fin   Date de fin
+ * @param DateTime $dateDebut Date de début
+ * @param DateTime $dateFin   Date de fin
  * @return string[] Nom des terrains disponibles
  */
 function getTerrainDispo($dateDebut, $dateFin) {
