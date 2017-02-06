@@ -21,10 +21,28 @@
  * @author Anael Mobilia
  * @brief Configuration centralisée
  */
+/**
+ * Données à configurer
+ */
 // Mail de l'administrateur
 define('__MAIL_ADMIN__', 'john.doe@example.com');
 // Nom du fichier Google Sheets
 define('__FILE_KEY__', '0AoFkkLP2MB8kdFd4bEJ5VzR2RVdBQkVuSW91WE1zZkE');
+
+/**
+ * Données liées au fichier Google Sheet
+ */
+// PLANNING
+define('__SHEET_ONGLET_PLANNING__', 'PLANNING');
+define('__SHEET_PLANNING_LIGNE_TERRAINS__', '1');
+// Notation numérique : A => 0, B => 1, ...
+define('__SHEET_PLANNING_COLONNE_DATES__', '0');
+define('__SHEET_PLANNING_PREMIERE_COLONNE_TERRAINS__', '1');
+// CONFIGURATION
+define('__SHEET_ONGLET_CONFIG__', 'CONFIGURATION');
+define('__SHEET_CONFIG_LIGNE_INDISPO_DEFAUT__', '2');
+define('__SHEET_CONFIG_LIGNE_DATE_DEB_INDISPO__', '3');
+define('__SHEET_CONFIG_LIGNE_DATE_FIN_INDISPO__', '4');
 
 /**
  *  Données calculées automatiquement

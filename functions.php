@@ -28,15 +28,15 @@
  */
 function getNomsMois() {
     $monArray = [
-        '1' => 'Janvier',
-        '2' => 'Février',
-        '3' => 'Mars',
-        '4' => 'Avril',
-        '5' => 'Mai',
-        '6' => 'Juin',
-        '7' => 'Juillet',
-        '8' => 'Aôut',
-        '9' => 'Septembre',
+        '01' => 'Janvier',
+        '02' => 'Février',
+        '03' => 'Mars',
+        '04' => 'Avril',
+        '05' => 'Mai',
+        '06' => 'Juin',
+        '07' => 'Juillet',
+        '08' => 'Août',
+        '09' => 'Septembre',
         '10' => 'Octobre',
         '11' => 'Novembre',
         '12' => 'Décembre'
@@ -56,7 +56,15 @@ function getListeJours($nomInput) {
 
     $monRetour = '<select name="' . $nomInput . '">' . "\r\n";
     for ($i = 1; $i <= 31; $i++) {
-        $monRetour .= '<option value="' . $i . '"';
+        // Notation sur deux chiffres
+        if ($i < 10) {
+            // Préfixage pour les premiers nombres
+            $index = '0' . $i;
+        } else {
+            $index = $i;
+        }
+
+        $monRetour .= '<option value="' . $index . '"';
 
         // Est-ce le jour actuel ?
         if ($i == $jourActuel) {
@@ -77,21 +85,213 @@ function getListeJours($nomInput) {
  * @return code html
  */
 function getListeMois($nomInput) {
-    // Jour actuel
-    $jourActuel = date('n');
+    // Mois actuel
+    $moisActuel = date('n');
+    // Année actuelle
+    $anneeActuelle = date('Y');
 
     $monRetour = '<select name="' . $nomInput . '">' . "\r\n";
     foreach (getNomsMois() as $key => $value) {
-        $monRetour .= '<option value="' . $key . '"';
+        // Gestion de l'année (pas de réservation dans le passé)
+        if ($key >= $moisActuel) {
+            $annee = $anneeActuelle;
+        } else {
+            $annee = $anneeActuelle + 1;
+        }
 
-        // Est-ce le jour actuel ?
-        if ($key == $jourActuel) {
+        $monRetour .= '<option value="' . $annee . '/' . $key . '/' . '"';
+
+        // Est-ce le mois actuel ?
+        if ($key == $moisActuel) {
             // preselection
             $monRetour .= ' selected="selected"';
         }
-        $monRetour .= '>' . $value . '</option>' . "\r\n";
+        $monRetour .= '>' . $value . ' ' . $annee . '</option>' . "\r\n";
     }
     $monRetour .= '</select>' . "\r\n";
 
     return $monRetour;
+}
+
+/**
+ * Terrains disponibles aux dates fournies
+ * @param type $debut Date de début (jj/mm/aaaa)
+ * @param type $fin Date de fin (jj/mm/aaaa)
+ * @return string[] Nom des terrains disponibles
+ */
+function getTerrainDispo($debut, $fin) {
+    // Récupération du fichier
+    $file = file_get_contents(__URL_TELECHARGEMENT__);
+    // Enregistrement en local
+    file_put_contents(__FILE_FQDN__, $file);
+
+    // Vérification du bon téléchargement
+    if ($file === FALSE || filesize(__FILE_FQDN__) < 1024) {
+        // Envoi d'un mail en cas d'erreur
+        mail(__MAIL_ADMIN__, 'Erreur de cron praleron', '');
+    }
+
+    // Chargement PHPExcel
+    require './PHPExcel/PHPExcel.php';
+
+    // Transformation des dates en objet
+    $dateDebut = new DateTime($debut);
+    $dateFin = new DateTime($fin);
+
+    /**
+     * Chargement du fichier de données
+     */
+    // Identification du type du fichier
+    $typeFichier = PHPExcel_IOFactory::identify(__FILE_FQDN__);
+
+    // Création d'un objet PHP Excel pour mon type de fichier
+    $objPHPExcel = PHPExcel_IOFactory::createReader($typeFichier);
+    // Je ne veux que les données, pas le formatage
+    //$objPHPExcel->setReadDataOnly(true);
+    // Chargement du fichier
+    $monFichier = $objPHPExcel->load(__FILE_FQDN__);
+
+    // Feuille PLANNING
+    $lePlanning = $monFichier->setActiveSheetIndexByName(__SHEET_ONGLET_PLANNING__);
+    // Feuille CONFIGURATION
+    $laConfiguration = $monFichier->setActiveSheetIndexByName(__SHEET_ONGLET_CONFIG__);
+
+    /**
+     * Récupération de la première date dans le fichier
+     */
+    $firstDate = $lePlanning->getCellByColumnAndRow(__SHEET_PLANNING_COLONNE_DATES__, __SHEET_PLANNING_LIGNE_DATES__)->getFormattedValue();
+    // Formatage pour Datetime (YYYY/MM/DD)
+    $premiereDate = new DateTime(substr($firstDate, 6) . substr($firstDate, 2, 4) . substr($firstDate, 0, 2));
+
+    /**
+     * Calcul des indices des lignes
+     */
+    $ligneDebut = $premiereDate->diff($dateDebut)->days + __SHEET_PLANNING_LIGNE_DATES__;
+    $ligneFin = $ligneDebut + $dateDebut->diff($dateFin)->days;
+
+    /**
+     * Récupération de la liste de tous les lieux
+     */
+    $listeLieux = new ArrayObject();
+    // Première colonne
+    $i = __SHEET_PLANNING_PREMIERE_COLONNE_TERRAINS__;
+    // Tant que j'ai un nom de terrain...
+    while (($nomLieu = $lePlanning->getCellByColumnAndRow($i, __SHEET_PLANNING_LIGNE_TERRAINS__)->getValue()) !== NULL) {
+        // Je le stocke !
+        $listeLieux->offsetSet($i, $nomLieu);
+        // Et passe à la colonne suivante
+        $i++;
+    }
+
+    /**
+     * Vérification que les dates demandées sont bien disponibles !
+     */
+    if ($lePlanning->getCellByColumnAndRow(__SHEET_PLANNING_COLONNE_DATES__, $ligneFin)->getValue() === NULL) {
+        // Sinon, on trashe !
+        $listeLieux = new ArrayObject();
+    }
+
+    /**
+     * Vérification de la cohérence des dates demandées
+     */
+    if ($ligneFin < $ligneDebut) {
+        // Sinon, on trashe !
+        $listeLieux = new ArrayObject();
+    }
+
+    /**
+     * Suppression des lieux systématiquement indisponibles !
+     */
+    // Nouvel objet pour éviter de modifier une liste qu'on itère...
+    $newList = new ArrayObject($listeLieux->getArrayCopy());
+    // Pour chaque lieu...
+    foreach ($listeLieux as $key => $value) {
+        // Je regarde s'il est taggué systématiquement indisponible
+        if ($laConfiguration->getCellByColumnAndRow($key, __SHEET_CONFIG_LIGNE_INDISPO_DEFAUT__)->getValue() !== NULL) {
+            // Si oui, je ne le prends pas !
+            $newList->offsetUnset($key);
+        }
+    }
+    $listeLieux = new ArrayObject($newList->getArrayCopy());
+
+    /**
+     * Suppression des lieux pour lesquels on est dans les dates d'indisponibilités
+     */
+    // Nouvel objet pour éviter de modifier une liste qu'on itère...
+    $newList = new ArrayObject($listeLieux->getArrayCopy());
+    // Pour chaque lieux restant...
+    foreach ($listeLieux as $key => $value) {
+        // Valeur formattée (date)
+        $debIndispo = $laConfiguration->getCellByColumnAndRow($key, __SHEET_CONFIG_LIGNE_DATE_DEB_INDISPO__)->getFormattedValue();
+        $finIndispo = $laConfiguration->getCellByColumnAndRow($key, __SHEET_CONFIG_LIGNE_DATE_FIN_INDISPO__)->getFormattedValue();
+
+        // Seulement si on a des valeurs !
+        if ($debIndispo !== '' && $finIndispo !== '') {
+            // Découpage des dates en fonction des slashs
+            $debExplode = explode('/', $debIndispo);
+            $jourDebut = $debExplode[0];
+            $moisDebut = $debExplode[1];
+            $finExplode = explode('/', $finIndispo);
+            $jourFin = $finExplode[0];
+            $moisFin = $finExplode[1];
+
+            // Année actuelle...
+            $anneeDebut = $anneeFin = date('Y');
+
+            // Les mois sont déjà passés....
+            if ($moisDebut < date('n') && $moisFin < date('n')) {
+                // Ce mois est déjà passé => année suivante
+                $anneeDebut++;
+            }
+
+            // On est entre les deux mois...
+            // => Le cas par défaut reste sur l'année !
+
+            // A cheval fin d'année... -> nouvelle année [période déjà passée !]
+            if ($moisFin < $moisDebut && $moisDebut < date('n')) {
+                // => Année suivante
+                $anneeFin = $anneeDebut + 1;
+            }
+
+            // A cheval fin d'année... -> nouvelle année [période non passée !]
+            if ($moisFin < $moisDebut && date('n') < $moisDebut) {
+                // => Année précédente pour le début
+                $anneeDebut--;
+            }
+
+            // Création des datetime
+            $dateIndispoDebut = new DateTime($anneeDebut . '/' . $moisDebut . '/' . $jourDebut);
+            $dateIndispoFin = new DateTime($anneeFin . '/' . $moisFin . '/' . $jourFin);
+
+            // dateDebutIndispo < dateDebut < dateFinIndispo
+            // || dateDebutIndispo < dateFin < dateFinIndispo
+            if (($dateIndispoDebut->getTimestamp() < $dateDebut->getTimestamp() && $dateDebut->getTimestamp() < $dateIndispoFin->getTimestamp()) || ($dateIndispoDebut->getTimestamp() < $dateFin->getTimestamp() && $dateFin->getTimestamp() < $dateIndispoFin->getTimestamp())) {
+                // Suppression du lieux
+                $newList->offsetUnset($key);
+            }
+        }
+    }
+    $listeLieux = new ArrayObject($newList->getArrayCopy());
+
+    /**
+     * On regarde dans les lieux restants s'ils sont disponibles ! ;-)
+     */
+    // Nouvel objet pour éviter de modifier une liste qu'on itère...
+    $newList = new ArrayObject($listeLieux->getArrayCopy());
+    foreach ($listeLieux as $key => $value) {
+        // Je passe chaque date dans l'intervalle demandée [tolérance d'un jour]
+        for ($i = $ligneDebut + 1; $i < $ligneFin; $i++) {
+            // Si la cellule contient des données
+            if ($lePlanning->getCellByColumnAndRow($key, $i)->getValue() !== NULL) {
+                // Lieu déjà réservé => non disponible !
+                $newList->offsetUnset($key);
+                // Sortie rapide du for
+                break;
+            }
+        }
+    }
+    $listeLieux = new ArrayObject($newList->getArrayCopy());
+
+    // Feuille du planning
+    return $listeLieux;
 }
