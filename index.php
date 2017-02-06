@@ -21,7 +21,6 @@
  * @author Anael Mobilia
  * @brief Affichage de la base
  */
-require './PHPExcel/PHPExcel.php';
 require './config.php';
 ?>
 <!DOCTYPE html>
