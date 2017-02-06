@@ -129,17 +129,6 @@ function getListeMois($nomInput) {
  * @return string[] Nom des terrains disponibles
  */
 function getTerrainDispo($debut, $fin) {
-    // Récupération du fichier
-    $file = file_get_contents(__URL_TELECHARGEMENT__);
-    // Enregistrement en local
-    file_put_contents(__FILE_FQDN__, $file);
-
-    // Vérification du bon téléchargement
-    if ($file === FALSE || filesize(__FILE_FQDN__) < 1024) {
-        // Envoi d'un mail en cas d'erreur
-        mail(__MAIL_ADMIN__, 'Erreur de cron praleron', '');
-    }
-
     // Chargement PHPExcel
     require './PHPExcel/PHPExcel.php';
 
