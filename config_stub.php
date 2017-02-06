@@ -26,6 +26,8 @@
  */
 // Mail de l'administrateur
 define('__MAIL_ADMIN__', 'john.doe@example.com');
+// Mail du gestionnaire de la base
+define('__MAIL_GESTIONNAIRE__', 'john.doe@example.com');
 // Nom du fichier Google Sheets
 define('__FILE_KEY__', '0AoFkkLP2MB8kdFd4bEJ5VzR2RVdBQkVuSW91WE1zZkE');
 
