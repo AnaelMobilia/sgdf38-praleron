@@ -21,7 +21,7 @@
  * @author Anael Mobilia
  * @brief Copie locale de fichier Google Sheet pour accélerer les performances
  */
-require './config.php';
+require __DIR__ . '/config.php';
 
 // Récupération du fichier
 $file = file_get_contents(__URL_TELECHARGEMENT__);
