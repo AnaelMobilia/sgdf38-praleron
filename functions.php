@@ -124,17 +124,13 @@ function getListeMois($nomInput) {
 
 /**
  * Terrains disponibles aux dates fournies
- * @param type $debut Date de début (aaaa/mm/jj)
- * @param type $fin   Date de fin (aaaa/mm/jj)
+ * @param DateTime $debut Date de début
+ * @param DateTime $fin   Date de fin
  * @return string[] Nom des terrains disponibles
  */
-function getTerrainDispo($debut, $fin) {
+function getTerrainDispo($dateDebut, $dateFin) {
     // Chargement PHPExcel
     require './PHPExcel/PHPExcel.php';
-
-    // Transformation des dates en objet
-    $dateDebut = new DateTime($debut);
-    $dateFin = new DateTime($fin);
 
     /**
      * Chargement du fichier de données
