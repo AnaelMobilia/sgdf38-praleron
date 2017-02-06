@@ -52,6 +52,6 @@ define('__SHEET_CONFIG_LIGNE_DATE_FIN_INDISPO__', '4');
 // URL de téléchargement du fichier
 define('__URL_TELECHARGEMENT__', 'https://docs.google.com/spreadsheets/d/' . __FILE_KEY__ . '/export?format=xlsx&id=' . __FILE_KEY__);
 // PATH FQDN du fihier sur le serveur
-define('__FILE_FQDN__', 'datas/' . __FILE_KEY__);
+define('__FILE_FQDN__', __DIR__ . '/datas/' . __FILE_KEY__);
 
 require 'functions.php';
