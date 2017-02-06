@@ -52,7 +52,11 @@ function getNomsMois() {
  */
 function getListeJours($nomInput) {
     // Jour actuel
-    $jourActuel = date('j');
+    $jourSelect = date('j');
+    // Surchargé par la saisie déjà effectuée le cas échéant
+    if (isset($_GET[$nomInput])) {
+        $jourSelect = $_GET[$nomInput];
+    }
 
     $monRetour = '<select name="' . $nomInput . '">' . "\r\n";
     for ($i = 1; $i <= 31; $i++) {
@@ -67,7 +71,7 @@ function getListeJours($nomInput) {
         $monRetour .= '<option value="' . $index . '"';
 
         // Est-ce le jour actuel ?
-        if ($i == $jourActuel) {
+        if ($i == $jourSelect) {
             // preselection
             $monRetour .= ' selected="selected"';
         }
@@ -86,7 +90,12 @@ function getListeJours($nomInput) {
  */
 function getListeMois($nomInput) {
     // Mois actuel
-    $moisActuel = date('n');
+    $moisSelect = $moisActuel = date('n');
+    // Surchargé par la saisie déjà effectuée le cas échéant
+    if (isset($_GET[$nomInput])) {
+        $moisSelect = substr($_GET[$nomInput], -3, 2);
+    }
+
     // Année actuelle
     $anneeActuelle = date('Y');
 
@@ -102,7 +111,7 @@ function getListeMois($nomInput) {
         $monRetour .= '<option value="' . $annee . '/' . $key . '/' . '"';
 
         // Est-ce le mois actuel ?
-        if ($key == $moisActuel) {
+        if ($key == $moisSelect) {
             // preselection
             $monRetour .= ' selected="selected"';
         }
@@ -115,8 +124,8 @@ function getListeMois($nomInput) {
 
 /**
  * Terrains disponibles aux dates fournies
- * @param type $debut Date de début (jj/mm/aaaa)
- * @param type $fin   Date de fin (jj/mm/aaaa)
+ * @param type $debut Date de début (aaaa/mm/jj)
+ * @param type $fin   Date de fin (aaaa/mm/jj)
  * @return string[] Nom des terrains disponibles
  */
 function getTerrainDispo($debut, $fin) {
