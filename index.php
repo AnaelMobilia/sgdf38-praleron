@@ -45,8 +45,8 @@ require './config.php';
     </head>
     <body>
         Cliquez sur un terrain pour obtenir ses caractéristiques et des photos.
+        <br />
         <iframe src="https://www.google.com/maps/d/embed?mid=11LLfJuTQQ8zbx_HFWDCfFZ0LHrs"></iframe>
-
         <br />
         <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get">
             Les dates de mon camp sont du &nbsp;
