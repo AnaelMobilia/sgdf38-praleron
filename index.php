@@ -149,26 +149,26 @@ require './config.php';
                         </div>
                     </div>
                 </form>
-                <?php
-            }
-            // Formulaire de réservation
-            if (isset($_GET['envoiMail'])) {
-                $corps = 'Une nouvelle demande de réservation a été formulée via le site :' . "\r\n";
-                foreach ($_GET as $key => $value) {
-                    // On ne prend pas la balise d'envoi du mail ... ;)
-                    if ($key != 'envoiMail') {
-                        // On ajoute des espaces dans le nom de la clef
-                        $corps .= preg_replace('#([A-Z])#', ' $0', $key);
-                        // Séparateur...
-                        $corps .= ' : ';
-                        // La valeur
-                        $corps .= $value . "\r\n";
-                    }
+            </fieldset>
+            <?php
+        }
+        // Formulaire de réservation
+        if (isset($_GET['envoiMail'])) {
+            $corps = 'Une nouvelle demande de réservation a été formulée via le site :' . "\r\n";
+            foreach ($_GET as $key => $value) {
+                // On ne prend pas la balise d'envoi du mail ... ;)
+                if ($key != 'envoiMail') {
+                    // On ajoute des espaces dans le nom de la clef
+                    $corps .= preg_replace('#([A-Z])#', ' $0', $key);
+                    // Séparateur...
+                    $corps .= ' : ';
+                    // La valeur
+                    $corps .= $value . "\r\n";
                 }
-                mail(__MAIL_GESTIONNAIRE__, utf8_decode('Demande de réservation de Praléron'), utf8_decode($corps));
-                echo "Votre demande a bien été envoyée, nous vous en remercions.<br />L'équipe Praléron.";
             }
-            ?>
-        </fieldset>
+            mail(__MAIL_GESTIONNAIRE__, utf8_decode('Demande de réservation de Praléron'), utf8_decode($corps));
+            echo "Votre demande a bien été envoyée, nous vous en remercions.<br />L'équipe Praléron.";
+        }
+        ?>
     </body>
 </html>
