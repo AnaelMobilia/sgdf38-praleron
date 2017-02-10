@@ -36,14 +36,6 @@ require './config.php';
                 width: 100%;
                 min-height: 500px;
             }
-            label {
-                display: block;
-                width: 200px;
-                float: left;
-            }
-            br {
-                clear: both;
-            }
             html {
                 width: 99%;
             }
@@ -73,75 +65,110 @@ require './config.php';
             $dateFin = new DateTime($_GET['anMoisFin'] . $_GET['jourFin']);
             $result = getTerrainDispo($dateDeb, $dateFin);
             $nbResult = count($result);
-            if ($nbResult == 0) :
-                ?>
-        Aucun terrain n'est disponible à ces dates !
-                <br />
-                N'hésitez pas à nous contacter quand même via le formulaire pour que nous voyons ce que nous pouvons faire pour votre séjour !
-            <?php else : ?>
-                <?php if ($nbResult == 1) : ?>
-                    A ces dates est disponible le terrain :
+            ?>
+        <fieldset>
+                <?php if ($nbResult == 0) : ?>
+                    Aucun terrain n'est disponible à ces dates !
+                    <br />
+                    N'hésitez pas à nous contacter quand même via le formulaire pour que nous voyons ce que nous pouvons faire pour votre séjour !
                 <?php else : ?>
-                    A ces dates sont disponibles les terrains :
-                <?php endif; ?>
-                <br />
-                <ul>
-                    <?php foreach ($result as $unTerrain) : ?>
-                        <li><?= $unTerrain ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <br />
-                Merci d'utiliser le formulaire ci-dessous si vous souhaitez effectuer une demande de réservation !
+                    <legend>
+                        <?php if ($nbResult == 1) : ?>
+                            Terrain disponible à ces dates :
+                        <?php else : ?>
+                            Terrains disponibles à ces dates :
+                        <?php endif; ?>
+                    </legend>
+                    <ul>
+                        <?php foreach ($result as $unTerrain) : ?>
+                            <li><?= $unTerrain ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </fieldset>
             <?php endif; ?>
-            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get">
-                <label for='nomAssociation'>Association</label>
-                <input type='text' name='nomAssociation' id='nomAssociation' />
-                <br />
-                <label for='dateDebutSejour'>Début du séjour</label>
-                <input type='text' name='dateDebutSejour' id='dateDebutSejour' value='<?= $dateDeb->format('d/m/Y') ?>'/>
-                <br />
-                <label for='dateFinSejour'>Fin du séjour</label>
-                <input type='text' name='dateFinSejour' id='dateFinSejour' value='<?= $dateFin->format('d/m/Y') ?>'/>
-                <br />
-                <label for='nomContact'>Votre nom</label>
-                <input type='text' name='nomContact' id='nomContact' />
-                <br />
-                <label for='mailContact'>Votre mail</label>
-                <input type='text' name='mailContact' id='mailContact' />
-                <br />
-                <label for='telephoneContact'>Votre téléphone</label>
-                <input type='text' name='telephoneContact' id='telephoneContact' />
-                <br />
-                <label for='terrainSouhaite'>Terrain idéalement souhaité</label>
-                <input type='text' name='terrainSouhaite' id='terrainSouhaite' />
-                <br />
-                <label for='nombrePersonnes'>Nombre estimés de personnes <em>(enfants et adultes)</em></label>
-                <input type='text' name='nombrePersonnes' id='nombrePersonnes' />
-                <br />
-                <label for='nombreTentes'>Nombre estimés de tentes</label>
-                <input type='text' name='nombreTentes' id='nombreTentes' />
-                <br />
-                <input type='submit' name='envoiMail' value='Envoyer'/>
-            </form>
-            <?php
-        }
-        // Formulaire de réservation
-        if (isset($_GET['envoiMail'])) {
-            $corps = 'Une nouvelle demande de réservation a été formulée via le site :' . "\r\n";
-            foreach ($_GET as $key => $value) {
-                // On ne prend pas la balise d'envoi du mail ... ;)
-                if ($key != 'envoiMail') {
-                    // On ajoute des espaces dans le nom de la clef
-                    $corps .= preg_replace('#([A-Z])#', ' $0', $key);
-                    // Séparateur...
-                    $corps .= ' : ';
-                    // La valeur
-                    $corps .= $value . "\r\n";
-                }
+            <fieldset>
+                <legend>Effectuer une demande de réservation :</legend>
+                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label for='nomAssociation' class="col-md-5 control-label">Association</label>
+                        <div class="col-md-7">
+                            <input type='text' name='nomAssociation' id='nomAssociation' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='dateDebutSejour' class="col-md-5 control-label">Début du séjour</label>
+                        <div class="col-md-7">
+                            <input type='text' name='dateDebutSejour' id='dateDebutSejour' value='<?= $dateDeb->format('d/m/Y') ?>' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='dateFinSejour' class="col-md-5 control-label">Fin du séjour</label>
+                        <div class="col-md-7">
+                            <input type='text' name='dateFinSejour' id='dateFinSejour' value='<?= $dateFin->format('d/m/Y') ?>' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='nomContact' class="col-md-5 control-label">Votre nom</label>
+                        <div class="col-md-7">
+                            <input type='text' name='nomContact' id='nomContact' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='mailContact' class="col-md-5 control-label">Votre mail</label>
+                        <div class="col-md-7">
+                            <input type='text' name='mailContact' id='mailContact' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='telephoneContact' class="col-md-5 control-label">Votre téléphone</label>
+                        <div class="col-md-7">
+                            <input type='text' name='telephoneContact' id='telephoneContact' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='terrainSouhaite' class="col-md-5 control-label">Terrain idéalement souhaité</label>
+                        <div class="col-md-7">
+                            <input type='text' name='terrainSouhaite' id='terrainSouhaite' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='nombrePersonnes' class="col-md-5 control-label">Nombre estimé de personnes <em>(enfants et adultes)</em></label>
+                        <div class="col-md-7">
+                            <input type='text' name='nombrePersonnes' id='nombrePersonnes' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='nombreTentes' class="col-md-5 control-label">Nombre estimé de tentes</label>
+                        <div class="col-md-7">
+                            <input type='text' name='nombreTentes' id='nombreTentes' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-4 col-md-7">
+                            <input type='submit' name='envoiMail' value='Envoyer' class="btn grand submit" />
+                        </div>
+                    </div>
+                </form>
+                <?php
             }
-            mail(__MAIL_GESTIONNAIRE__, utf8_decode('Demande de réservation de Praléron'), utf8_decode($corps));
-            echo "Votre demande a bien été envoyée, nous vous en remercions.<br />L'équipe Praléron.";
-        }
-        ?>
+            // Formulaire de réservation
+            if (isset($_GET['envoiMail'])) {
+                $corps = 'Une nouvelle demande de réservation a été formulée via le site :' . "\r\n";
+                foreach ($_GET as $key => $value) {
+                    // On ne prend pas la balise d'envoi du mail ... ;)
+                    if ($key != 'envoiMail') {
+                        // On ajoute des espaces dans le nom de la clef
+                        $corps .= preg_replace('#([A-Z])#', ' $0', $key);
+                        // Séparateur...
+                        $corps .= ' : ';
+                        // La valeur
+                        $corps .= $value . "\r\n";
+                    }
+                }
+                mail(__MAIL_GESTIONNAIRE__, utf8_decode('Demande de réservation de Praléron'), utf8_decode($corps));
+                echo "Votre demande a bien été envoyée, nous vous en remercions.<br />L'équipe Praléron.";
+            }
+            ?>
+        </fieldset>
     </body>
 </html>
