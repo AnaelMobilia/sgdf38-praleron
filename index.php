@@ -90,61 +90,61 @@ require './config.php';
                 <legend>Effectuer une demande de réservation :</legend>
                 <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-horizontal">
                     <div class="form-group">
-                        <label for='nomAssociation' class="col-md-5 control-label">Association</label>
-                        <div class="col-md-7">
+                        <label for='nomAssociation' class="col-md-6 control-label">Association</label>
+                        <div class="col-md-6">
                             <input type='text' name='nomAssociation' id='nomAssociation' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='dateDebutSejour' class="col-md-5 control-label">Début du séjour</label>
-                        <div class="col-md-7">
+                        <label for='dateDebutSejour' class="col-md-6 control-label">Début du séjour</label>
+                        <div class="col-md-6">
                             <input type='text' name='dateDebutSejour' id='dateDebutSejour' value='<?= $dateDeb->format('d/m/Y') ?>' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='dateFinSejour' class="col-md-5 control-label">Fin du séjour</label>
-                        <div class="col-md-7">
+                        <label for='dateFinSejour' class="col-md-6 control-label">Fin du séjour</label>
+                        <div class="col-md-6">
                             <input type='text' name='dateFinSejour' id='dateFinSejour' value='<?= $dateFin->format('d/m/Y') ?>' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='nomContact' class="col-md-5 control-label">Votre nom</label>
-                        <div class="col-md-7">
+                        <label for='nomContact' class="col-md-6 control-label">Votre nom</label>
+                        <div class="col-md-6">
                             <input type='text' name='nomContact' id='nomContact' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='mailContact' class="col-md-5 control-label">Votre mail</label>
-                        <div class="col-md-7">
+                        <label for='mailContact' class="col-md-6 control-label">Votre mail</label>
+                        <div class="col-md-6">
                             <input type='text' name='mailContact' id='mailContact' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='telephoneContact' class="col-md-5 control-label">Votre téléphone</label>
-                        <div class="col-md-7">
+                        <label for='telephoneContact' class="col-md-6 control-label">Votre téléphone</label>
+                        <div class="col-md-6">
                             <input type='text' name='telephoneContact' id='telephoneContact' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='terrainSouhaite' class="col-md-5 control-label">Terrain idéalement souhaité</label>
-                        <div class="col-md-7">
+                        <label for='terrainSouhaite' class="col-md-6 control-label">Terrain idéalement souhaité</label>
+                        <div class="col-md-6">
                             <input type='text' name='terrainSouhaite' id='terrainSouhaite' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='nombrePersonnes' class="col-md-5 control-label">Nombre estimé de personnes <em>(enfants et adultes)</em></label>
-                        <div class="col-md-7">
+                        <label for='nombrePersonnes' class="col-md-6 control-label">Nombre estimé de personnes <em>(enfants et adultes)</em></label>
+                        <div class="col-md-6">
                             <input type='text' name='nombrePersonnes' id='nombrePersonnes' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='nombreTentes' class="col-md-5 control-label">Nombre estimé de tentes</label>
-                        <div class="col-md-7">
+                        <label for='nombreTentes' class="col-md-6 control-label">Nombre estimé de tentes</label>
+                        <div class="col-md-6">
                             <input type='text' name='nombreTentes' id='nombreTentes' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-lg-offset-4 col-md-7">
+                        <div class="col-lg-offset-4 col-md-6">
                             <input type='submit' name='envoiMail' value='Envoyer' class="btn grand submit" />
                         </div>
                     </div>
