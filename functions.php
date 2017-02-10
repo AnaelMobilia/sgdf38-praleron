@@ -58,7 +58,7 @@ function getListeJours($nomInput) {
         $jourSelect = $_GET[$nomInput];
     }
 
-    $monRetour = '<select name="' . $nomInput . '">' . "\r\n";
+    $monRetour = '<select class="form-control" name="' . $nomInput . '">' . "\r\n";
     for ($i = 1; $i <= 31; $i++) {
         // Notation sur deux chiffres
         if ($i < 10) {
@@ -99,7 +99,7 @@ function getListeMois($nomInput) {
     // Année actuelle
     $anneeActuelle = date('Y');
 
-    $monRetour = '<select name="' . $nomInput . '">' . "\r\n";
+    $monRetour = '<select class="form-control" name="' . $nomInput . '">' . "\r\n";
     foreach (getNomsMois() as $key => $value) {
         // Gestion de l'année (pas de réservation dans le passé)
         if ($key >= $moisActuel) {

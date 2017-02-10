@@ -27,6 +27,9 @@ require './config.php';
 <html lang="fr">
     <head>
         <title>Réservation de la base de scoutisme de Praléron en Isère</title>
+        <!-- Reprises des CSS du site pour l'intégration visuelle -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
         <link rel='stylesheet' type='text/css' href='http://www.sgdf38.fr/css/styles.css'>
         <style>
             iframe {
@@ -52,14 +55,16 @@ require './config.php';
         <br />
         <iframe src="https://www.google.com/maps/d/embed?mid=11LLfJuTQQ8zbx_HFWDCfFZ0LHrs"></iframe>
         <br />
-        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get">
-            Les dates de mon camp sont du &nbsp;
-            <?= getListeJours('jourDeb') ?>
-            <?= getListeMois('anMoisDeb') ?>
-            &nbsp;au&nbsp;
-            <?= getListeJours('jourFin') ?>
-            <?= getListeMois('anMoisFin') ?>
-            <input name = "submit" type="submit" value="Voir les terrains disponibles" />
+        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-inline">
+            <fieldset>
+                Les dates de mon camp sont du &nbsp;
+                <?= getListeJours('jourDeb') ?>
+                <?= getListeMois('anMoisDeb') ?>
+                &nbsp;au&nbsp;
+                <?= getListeJours('jourFin') ?>
+                <?= getListeMois('anMoisFin') ?>
+                <input name="submit" type="submit" value="Voir les terrains disponibles" class="btn grand submit" />
+            </fieldset>
         </form>
         <?php
         // Formulaire de disponibilités
