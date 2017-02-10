@@ -55,7 +55,7 @@ require './config.php';
                 &nbsp;au&nbsp;
                 <?= getListeJours('jourFin') ?>
                 <?= getListeMois('anMoisFin') ?>
-                <input name="submit" type="submit" value="Voir les terrains disponibles" class="btn grand submit" />
+                <input name="submit" type="submit" value="Voir les terrains disponibles" class="btn submit" />
             </fieldset>
         </form>
         <?php
@@ -144,8 +144,8 @@ require './config.php';
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-lg-offset-4 col-md-6">
-                            <input type='submit' name='envoiMail' value='Envoyer' class="btn grand submit" />
+                        <div class="col-md-offset-4 col-md-6">
+                            <input type='submit' name='envoiMail' value='Envoyer' class="btn submit" />
                         </div>
                     </div>
                 </form>
