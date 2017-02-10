@@ -41,6 +41,9 @@ require './config.php';
             br {
                 clear: both;
             }
+            html {
+                width: 99%;
+            }
         </style>
     </head>
     <body>
