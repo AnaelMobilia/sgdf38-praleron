@@ -96,6 +96,18 @@ require './config.php';
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for='nomGroupe' class="col-md-6 control-label">Groupe</label>
+                        <div class="col-md-6">
+                            <input type='text' name='nomGroupe' id='nomGroupe' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for='trancheAge' class="col-md-6 control-label">Tranche d'âge</label>
+                        <div class="col-md-6">
+                            <input type='text' name='trancheAge' id='trancheAge' class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for='dateDebutSejour' class="col-md-6 control-label">Début du séjour</label>
                         <div class="col-md-6">
                             <input type='text' name='dateDebutSejour' id='dateDebutSejour' value='<?= $dateDeb->format('d/m/Y') ?>' class="form-control" />
@@ -154,6 +166,7 @@ require './config.php';
         }
         // Formulaire de réservation
         if (isset($_GET['envoiMail'])) {
+            // Corps du mail
             $corps = 'Une nouvelle demande de réservation a été formulée via le site :' . "\r\n";
             foreach ($_GET as $key => $value) {
                 // On ne prend pas la balise d'envoi du mail ... ;)
@@ -166,7 +179,16 @@ require './config.php';
                     $corps .= $value . "\r\n";
                 }
             }
-            mail(__MAIL_GESTIONNAIRE__, utf8_decode('Demande de réservation de Praléron'), utf8_decode($corps));
+
+            // Headers
+            $headers = '';
+            // Nettoyage & vérification de l'adresse mail
+            $email = filter_var($_GET['mailContact'], FILTER_VALIDATE_EMAIL);
+            if ($email != FALSE) {
+                $headers = "Reply-To: " . $email;
+            }
+
+            mail(__MAIL_GESTIONNAIRE__, utf8_decode('Demande de réservation de Praléron'), utf8_decode($corps), $headers);
             echo "Votre demande a bien été envoyée, nous vous en remercions.<br />L'équipe Praléron.";
         }
         ?>
