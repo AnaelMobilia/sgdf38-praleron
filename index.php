@@ -38,6 +38,9 @@ require './config.php';
             html {
                 width: 99%;
             }
+            fieldset input[type="tel"], input[type="date"], input[type="email"], input[type="number"], select {
+                margin-left: 10px;
+            }
         </style>
     </head>
     <body>
@@ -65,7 +68,7 @@ require './config.php';
             $result = getTerrainDispo($dateDeb, $dateFin);
             $nbResult = count($result);
             ?>
-        <fieldset>
+            <fieldset>
                 <?php if ($nbResult == 0) : ?>
                     Aucun terrain n'est disponible à ces dates !
                     <br />
@@ -87,71 +90,68 @@ require './config.php';
             <?php endif; ?>
             <fieldset>
                 <legend>Effectuer une demande de réservation :</legend>
-                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-horizontal">
+                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" class="form-horizontal">
                     <div class="form-group">
                         <label for='Association' class="col-md-6 control-label">Association</label>
                         <div class="col-md-6">
-                            <input type='text' name='Association' id='Association' class="form-control" />
+                            <input type='text' name='Association' id='Association' class="form-control" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for='Groupe' class="col-md-6 control-label">Groupe</label>
                         <div class="col-md-6">
-                            <input type='text' name='Groupe' id='Groupe' class="form-control" />
+                            <input type='text' name='Groupe' id='Groupe' class="form-control" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for='TrancheDAge' class="col-md-6 control-label">Tranche d'âge</label>
                         <div class="col-md-6">
-                            <input type='text' name='TrancheDAge' id='TrancheDAge' class="form-control" />
+                            <input type='text' name='TrancheDAge' id='TrancheDAge' class="form-control" required />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for='DebutDuSejour' class="col-md-6 control-label">Début du séjour</label>
-                        <div class="col-md-6">
-                            <input type='text' name='DebutDuSejour' id='DebutDuSejour' value='<?= $dateDeb->format('d/m/Y') ?>' class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for='FinDuSejour' class="col-md-6 control-label">Fin du séjour</label>
-                        <div class="col-md-6">
-                            <input type='text' name='FinDuSejour' id='FinDuSejour' value='<?= $dateFin->format('d/m/Y') ?>' class="form-control" />
-                        </div>
-                    </div>
+                    <!-- Gestion des dates de réservation -->
+                    <input type='hidden' name='DebutDuSejour' id='DebutDuSejour' value='<?= $dateDeb->format('d/m/Y') ?>' class="invisible" />
+                    <input type='hidden' name='FinDuSejour' id='FinDuSejour' value='<?= $dateFin->format('d/m/Y') ?>' class="invisible" />
+                    <!-- Fin dates de réservation -->
                     <div class="form-group">
                         <label for='Contact' class="col-md-6 control-label">Votre nom</label>
                         <div class="col-md-6">
-                            <input type='text' name='Contact' id='Contact' class="form-control" />
+                            <input type='text' name='Contact' id='Contact' class="form-control" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for='AdresseMail' class="col-md-6 control-label">Votre mail</label>
                         <div class="col-md-6">
-                            <input type='text' name='AdresseMail' id='AdresseMail' class="form-control" />
+                            <input type='email' name='AdresseMail' id='AdresseMail' class="form-control" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for='Telephone' class="col-md-6 control-label">Votre téléphone</label>
                         <div class="col-md-6">
-                            <input type='text' name='Telephone' id='Telephone' class="form-control" />
+                            <input type='tel' name='Telephone' id='Telephone' class="form-control" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for='TerrainSouhaite' class="col-md-6 control-label">Terrain idéalement souhaité</label>
                         <div class="col-md-6">
-                            <input type='text' name='TerrainSouhaite' id='TerrainSouhaite' class="form-control" />
+                            <select name='TerrainSouhaite[]' id='TerrainSouhaite' class="form-control" multiple required />
+                            <option selected="true" disabled="disabled" value="">--- Choisir ---</option>
+                            <?php foreach ($result as $unTerrain) : ?>
+                                <option value="<?= $unTerrain ?>"><?= $unTerrain ?></option>
+                            <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for='NombreDePersonnes' class="col-md-6 control-label">Nombre estimé de personnes <em>(enfants et adultes)</em></label>
                         <div class="col-md-6">
-                            <input type='text' name='NombreDePersonnes' id='NombreDePersonnes' class="form-control" />
+                            <input type='number' name='NombreDePersonnes' id='NombreDePersonnes' class="form-control" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for='NombreDeTentes' class="col-md-6 control-label">Nombre estimé de tentes</label>
                         <div class="col-md-6">
-                            <input type='text' name='NombreDeTentes' id='NombreDeTentes' class="form-control" />
+                            <input type='number' name='NombreDeTentes' id='NombreDeTentes' class="form-control" required />
                         </div>
                     </div>
                     <div class="form-group">
@@ -164,10 +164,10 @@ require './config.php';
             <?php
         }
         // Formulaire de réservation
-        if (isset($_GET['envoiMail'])) {
+        if (isset($_POST['envoiMail'])) {
             // Corps du mail
             $corps = 'Une nouvelle demande de réservation a été formulée via le site :' . "\r\n";
-            foreach ($_GET as $key => $value) {
+            foreach ($_POST as $key => $value) {
                 // On ne prend pas la balise d'envoi du mail ... ;)
                 if ($key != 'envoiMail') {
                     // On ajoute des espaces dans le nom de la clef + formatage visuel
@@ -176,6 +176,10 @@ require './config.php';
                     // Séparateur...
                     $corps .= ' : ';
                     // La valeur
+                    if (is_array($value)) {
+                        // array -> str
+                        $value = implode(" + ", $value);
+                    }
                     $corps .= $value . "\r\n";
                 }
             }
@@ -183,7 +187,7 @@ require './config.php';
             // Headers
             $headers = '';
             // Nettoyage & vérification de l'adresse mail
-            $email = filter_var($_GET['mailContact'], FILTER_VALIDATE_EMAIL);
+            $email = filter_var($_POST['AdresseMail'], FILTER_VALIDATE_EMAIL);
             if ($email != FALSE) {
                 $headers = "Reply-To: " . $email;
             }
