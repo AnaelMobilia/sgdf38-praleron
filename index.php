@@ -89,69 +89,69 @@ require './config.php';
                 <legend>Effectuer une demande de réservation :</legend>
                 <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-horizontal">
                     <div class="form-group">
-                        <label for='nomAssociation' class="col-md-6 control-label">Association</label>
+                        <label for='Association' class="col-md-6 control-label">Association</label>
                         <div class="col-md-6">
-                            <input type='text' name='nomAssociation' id='nomAssociation' class="form-control" />
+                            <input type='text' name='Association' id='Association' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='nomGroupe' class="col-md-6 control-label">Groupe</label>
+                        <label for='Groupe' class="col-md-6 control-label">Groupe</label>
                         <div class="col-md-6">
-                            <input type='text' name='nomGroupe' id='nomGroupe' class="form-control" />
+                            <input type='text' name='Groupe' id='Groupe' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='trancheAge' class="col-md-6 control-label">Tranche d'âge</label>
+                        <label for='TrancheDAge' class="col-md-6 control-label">Tranche d'âge</label>
                         <div class="col-md-6">
-                            <input type='text' name='trancheAge' id='trancheAge' class="form-control" />
+                            <input type='text' name='TrancheDAge' id='TrancheDAge' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='dateDebutSejour' class="col-md-6 control-label">Début du séjour</label>
+                        <label for='DebutDuSejour' class="col-md-6 control-label">Début du séjour</label>
                         <div class="col-md-6">
-                            <input type='text' name='dateDebutSejour' id='dateDebutSejour' value='<?= $dateDeb->format('d/m/Y') ?>' class="form-control" />
+                            <input type='text' name='DebutDuSejour' id='DebutDuSejour' value='<?= $dateDeb->format('d/m/Y') ?>' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='dateFinSejour' class="col-md-6 control-label">Fin du séjour</label>
+                        <label for='FinDuSejour' class="col-md-6 control-label">Fin du séjour</label>
                         <div class="col-md-6">
-                            <input type='text' name='dateFinSejour' id='dateFinSejour' value='<?= $dateFin->format('d/m/Y') ?>' class="form-control" />
+                            <input type='text' name='FinDuSejour' id='FinDuSejour' value='<?= $dateFin->format('d/m/Y') ?>' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='nomContact' class="col-md-6 control-label">Votre nom</label>
+                        <label for='Contact' class="col-md-6 control-label">Votre nom</label>
                         <div class="col-md-6">
-                            <input type='text' name='nomContact' id='nomContact' class="form-control" />
+                            <input type='text' name='Contact' id='Contact' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='mailContact' class="col-md-6 control-label">Votre mail</label>
+                        <label for='AdresseMail' class="col-md-6 control-label">Votre mail</label>
                         <div class="col-md-6">
-                            <input type='text' name='mailContact' id='mailContact' class="form-control" />
+                            <input type='text' name='AdresseMail' id='AdresseMail' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='telephoneContact' class="col-md-6 control-label">Votre téléphone</label>
+                        <label for='Telephone' class="col-md-6 control-label">Votre téléphone</label>
                         <div class="col-md-6">
-                            <input type='text' name='telephoneContact' id='telephoneContact' class="form-control" />
+                            <input type='text' name='Telephone' id='Telephone' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='terrainSouhaite' class="col-md-6 control-label">Terrain idéalement souhaité</label>
+                        <label for='TerrainSouhaite' class="col-md-6 control-label">Terrain idéalement souhaité</label>
                         <div class="col-md-6">
-                            <input type='text' name='terrainSouhaite' id='terrainSouhaite' class="form-control" />
+                            <input type='text' name='TerrainSouhaite' id='TerrainSouhaite' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='nombrePersonnes' class="col-md-6 control-label">Nombre estimé de personnes <em>(enfants et adultes)</em></label>
+                        <label for='NombreDePersonnes' class="col-md-6 control-label">Nombre estimé de personnes <em>(enfants et adultes)</em></label>
                         <div class="col-md-6">
-                            <input type='text' name='nombrePersonnes' id='nombrePersonnes' class="form-control" />
+                            <input type='text' name='NombreDePersonnes' id='NombreDePersonnes' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for='nombreTentes' class="col-md-6 control-label">Nombre estimé de tentes</label>
+                        <label for='NombreDeTentes' class="col-md-6 control-label">Nombre estimé de tentes</label>
                         <div class="col-md-6">
-                            <input type='text' name='nombreTentes' id='nombreTentes' class="form-control" />
+                            <input type='text' name='NombreDeTentes' id='NombreDeTentes' class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -170,8 +170,9 @@ require './config.php';
             foreach ($_GET as $key => $value) {
                 // On ne prend pas la balise d'envoi du mail ... ;)
                 if ($key != 'envoiMail') {
-                    // On ajoute des espaces dans le nom de la clef
-                    $corps .= preg_replace('#([A-Z])#', ' $0', $key);
+                    // On ajoute des espaces dans le nom de la clef + formatage visuel
+                    $clefEspace = trim(strtolower(preg_replace('#([A-Z])#', ' $0', $key)));
+                    $corps .= ucfirst($clefEspace);
                     // Séparateur...
                     $corps .= ' : ';
                     // La valeur
