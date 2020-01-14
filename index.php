@@ -28,9 +28,8 @@ require './config.php';
     <head>
         <title>Réservation de la base de scoutisme de Praléron en Isère</title>
         <!-- Reprises des CSS du site pour l'intégration visuelle -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-        <link rel='stylesheet' type='text/css' href='http://www.sgdf38.fr/css/styles.css'>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel='stylesheet' type='text/css' href='https://www.sgdf38.fr/css/styles.css'>
         <style>
             iframe {
                 width: 100%;
