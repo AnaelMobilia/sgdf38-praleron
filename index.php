@@ -132,7 +132,7 @@ require './config.php';
                     <div class="form-group">
                         <label for='TerrainSouhaite' class="col-md-6 control-label">Terrain idéalement souhaité</label>
                         <div class="col-md-6">
-                            <select name='TerrainSouhaite[]' id='TerrainSouhaite' class="form-control" multiple required />
+                            <select name='TerrainSouhaite[]' id='TerrainSouhaite' class="form-control" multiple required>
                             <option selected="selected" disabled="disabled" value="">--- Choisir ---</option>
                             <?php foreach ($result as $unTerrain) : ?>
                                 <option value="<?= $unTerrain ?>"><?= $unTerrain ?></option>
