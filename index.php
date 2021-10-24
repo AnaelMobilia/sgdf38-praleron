@@ -49,22 +49,20 @@ require './config.php';
         <br />
         <iframe src="https://www.google.com/maps/d/embed?mid=11LLfJuTQQ8zbx_HFWDCfFZ0LHrs"></iframe>
         <br />
-        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-inline">
+        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-inline" onsubmit="if(document.getElementById('dateFin').value < document.getElementById('dateDeb').value){alert('La date de fin doit être postérieure à la date de début !');return false;}">
             <fieldset>
                 Les dates de mon camp sont du &nbsp;
-                <?= getListeJours('jourDeb') ?>
-                <?= getListeMois('anMoisDeb') ?>
+                <input type="date" name="dateDeb" id="dateDeb" value="<?=isset($_GET["dateDeb"]) ? $_GET["dateDeb"] : date("Y-m-d")?>" min="<?=date("Y-m-d")?>" max="<?=date("Y-m-d", time()+365*24*60*60)?>" onchange="if(document.getElementById('dateFin').value < this.value){let maDate = new Date(this.value);maDate.setDate(maDate.getDate() + 1);document.getElementById('dateFin').value = maDate.toISOString().slice(0, 10)}"/>
                 &nbsp;au&nbsp;
-                <?= getListeJours('jourFin') ?>
-                <?= getListeMois('anMoisFin') ?>
+                <input type="date" name="dateFin" id="dateFin" value="<?=isset($_GET["dateFin"]) ? $_GET["dateFin"] : date("Y-m-d", time()+24*60*60)?>" min="<?=date("Y-m-d")?>" max="<?=date("Y-m-d", time()+365*24*60*60)?>"/>
                 <input name="submit" type="submit" value="Voir les terrains disponibles" class="btn submit" />
             </fieldset>
         </form>
         <?php
         // Formulaire de disponibilités
         if (isset($_GET['submit'])) {
-            $dateDeb = new DateTime($_GET['anMoisDeb'] . $_GET['jourDeb']);
-            $dateFin = new DateTime($_GET['anMoisFin'] . $_GET['jourFin']);
+            $dateDeb = new DateTime($_GET['dateDeb']);
+            $dateFin = new DateTime($_GET['dateFin']);
             $result = getTerrainDispo($dateDeb, $dateFin);
             $nbResult = count($result);
             ?>
