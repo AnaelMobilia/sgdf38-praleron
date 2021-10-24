@@ -27,7 +27,7 @@
  * @return string[]
  */
 function getNomsMois() {
-    $monArray = [
+    return [
         '01' => 'Janvier',
         '02' => 'Février',
         '03' => 'Mars',
@@ -41,14 +41,12 @@ function getNomsMois() {
         '11' => 'Novembre',
         '12' => 'Décembre'
     ];
-
-    return $monArray;
 }
 
 /**
  * Liste déroulante de tous les jours avec préselection du jour actuel
- * @param type $nomInput nom du input
- * @return code html
+ * @param string $nomInput nom du input
+ * @return string code html
  */
 function getListeJours($nomInput) {
     // Jour actuel
@@ -85,8 +83,8 @@ function getListeJours($nomInput) {
 
 /**
  * Liste déroulante de tous les jours avec préselection du jour actuel
- * @param type $nomInput nom du input
- * @return code html
+ * @param string $nomInput nom du input
+ * @return string code html
  */
 function getListeMois($nomInput) {
     // Mois actuel
@@ -125,8 +123,10 @@ function getListeMois($nomInput) {
 /**
  * Terrains disponibles aux dates fournies
  * @param DateTime $dateDebut Date de début
- * @param DateTime $dateFin   Date de fin
- * @return string[] Nom des terrains disponibles
+ * @param DateTime $dateFin Date de fin
+ * @return ArrayObject Nom des terrains disponibles
+ * @throws PHPExcel_Exception
+ * @throws PHPExcel_Reader_Exception
  */
 function getTerrainDispo($dateDebut, $dateFin) {
     // Chargement PHPExcel
@@ -284,8 +284,6 @@ function getTerrainDispo($dateDebut, $dateFin) {
             }
         }
     }
-    $listeLieux = new ArrayObject($newList->getArrayCopy());
-
     // Feuille du planning
-    return $listeLieux;
+    return new ArrayObject($newList->getArrayCopy());
 }
