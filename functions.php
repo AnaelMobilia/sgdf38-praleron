@@ -168,11 +168,17 @@ function getTerrainDispo($dateDebut, $dateFin) {
     /**
      * On regarde dans les lieux restants s'ils sont disponibles ! ;-)
      */
+    // Tolérance d'un jour si on est sur une durée supérieure à un week-end
+    if ($ligneFin - $ligneDebut > 1) {
+        $debutVerif = $ligneDebut + 1;
+    } else {
+        $debutVerif = $ligneDebut;
+    }
     // Nouvel objet pour éviter de modifier une liste qu'on itère...
     $newList = new ArrayObject($listeLieux->getArrayCopy());
     foreach ($listeLieux as $key => $value) {
-        // Je passe chaque date dans l'intervalle demandée [tolérance d'un jour]
-        for ($i = $ligneDebut + 1; $i < $ligneFin; $i++) {
+        // Je passe chaque date dans l'intervalle demandée
+        for ($i = $debutVerif; $i <= $ligneFin; $i++) {
             // Si la cellule contient des données
             if ($lePlanning->getCellByColumnAndRow($key, $i)->getValue() !== NULL) {
                 // Lieu déjà réservé => non disponible !
