@@ -54,4 +54,30 @@ define('__URL_TELECHARGEMENT__', 'https://docs.google.com/spreadsheets/d/' . __F
 // PATH FQDN du fihier sur le serveur
 define('__FILE_FQDN__', __DIR__ . '/datas/' . __FILE_KEY__);
 
+/**
+ * Gestion des erreurs
+ */
+function exception_handler($exception)
+{
+    /**
+     * Envoi d'un mail avec le détail de l'erreur à l'administrateur
+     */
+    // Adresse expediteur
+    $headers = 'From: ' . __MAIL_ADMIN__ . "\n";
+    // Adresse de retour
+    $headers .= 'Reply-To: ' . __MAIL_ADMIN__ . "\n";
+    // Date
+    $headers .= 'Date: ' . date('D, j M Y H:i:s +0200') . "\n";
+    $message = $exception->getMessage() . "\r\n" . $exception->getTraceAsString();
+    $message .= "\r\nURL : " . $_SERVER['REQUEST_URI'];
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $message .= "\r\nHTTP REFERER : " . $_SERVER['HTTP_REFERER'];
+    }
+    $message .= "\r\nHTTP USER AGENT : " . $_SERVER['HTTP_USER_AGENT'];
+    $message .= "\r\nREMOTE ADDR : " . $_SERVER['REMOTE_ADDR'];
+
+    mail(__MAIL_ADMIN__, '[Praleron-Reservation] Erreur rencontrée', $message, $headers);
+}
+set_exception_handler('exception_handler');
+
 require 'functions.php';
