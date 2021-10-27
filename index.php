@@ -77,16 +77,13 @@ if (isset($_GET['submit'])) {
     ?>
     <fieldset>
         <?php if ($nbResult == 0) : ?>
-            Aucun terrain n'est disponible à ces dates !
+            Désolé, aucun terrain n'est disponible à ces dates !
             <br/>
-            N'hésitez pas à nous contacter quand même via le formulaire pour que nous voyons ce que nous pouvons faire pour votre séjour !
+            <!--N'hésitez pas à nous contacter quand même via le formulaire pour que nous voyons ce que nous pouvons faire pour votre séjour !-->
+            N'hésitez pas à revenir voir ultérieurement si une place s'est libérée !
         <?php else : ?>
             <legend>
-                <?php if ($nbResult == 1) : ?>
-                    Terrain disponible à ces dates :
-                <?php else : ?>
-                    Terrains disponibles à ces dates :
-                <?php endif; ?>
+                Terrain<?= ($nbResult > 1 ? "s" : "") ?> disponible<?= ($nbResult > 1 ? "s" : "") ?> à ces dates :
             </legend>
             <ul>
                 <?php foreach ($result as $unTerrain) : ?>
@@ -95,83 +92,87 @@ if (isset($_GET['submit'])) {
             </ul>
         <?php endif; ?>
     </fieldset>
-    <fieldset>
-        <legend>Effectuer une demande de réservation :</legend>
-        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" class="form-horizontal">
-            <div class="form-group">
-                <label for='Association' class="col-md-6 control-label">Association</label>
-                <div class="col-md-6">
-                    <input type='text' name='Association' id='Association' class="form-control" required/>
+    <?php if ($nbResult >= 1) : ?>
+        <fieldset>
+            <legend>Effectuer une demande de réservation :</legend>
+            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" class="form-horizontal">
+                <div class="form-group">
+                    <label for='Association' class="col-md-6 control-label">Association</label>
+                    <div class="col-md-6">
+                        <input type='text' name='Association' id='Association' class="form-control" required/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for='Groupe' class="col-md-6 control-label">Groupe</label>
-                <div class="col-md-6">
-                    <input type='text' name='Groupe' id='Groupe' class="form-control" required/>
+                <div class="form-group">
+                    <label for='Groupe' class="col-md-6 control-label">Groupe</label>
+                    <div class="col-md-6">
+                        <input type='text' name='Groupe' id='Groupe' class="form-control" required/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for='TrancheDAge' class="col-md-6 control-label">Tranche d'âge</label>
-                <div class="col-md-6">
-                    <input type='text' name='TrancheDAge' id='TrancheDAge' class="form-control" required/>
+                <div class="form-group">
+                    <label for='TrancheDAge' class="col-md-6 control-label">Tranche d'âge</label>
+                    <div class="col-md-6">
+                        <input type='text' name='TrancheDAge' id='TrancheDAge' class="form-control" required/>
+                    </div>
                 </div>
-            </div>
-            <!-- Gestion des dates de réservation -->
-            <input type='hidden' name='DebutDuSejour' id='DebutDuSejour' value='<?= $dateDeb->format('d/m/Y') ?>'
-                   class="invisible"/>
-            <input type='hidden' name='FinDuSejour' id='FinDuSejour' value='<?= $dateFin->format('d/m/Y') ?>'
-                   class="invisible"/>
-            <!-- Fin dates de réservation -->
-            <div class="form-group">
-                <label for='Contact' class="col-md-6 control-label">Votre nom</label>
-                <div class="col-md-6">
-                    <input type='text' name='Contact' id='Contact' class="form-control" required/>
+                <!-- Gestion des dates de réservation -->
+                <input type='hidden' name='DebutDuSejour' id='DebutDuSejour' value='<?= $dateDeb->format('d/m/Y') ?>'
+                       class="invisible"/>
+                <input type='hidden' name='FinDuSejour' id='FinDuSejour' value='<?= $dateFin->format('d/m/Y') ?>'
+                       class="invisible"/>
+                <!-- Fin dates de réservation -->
+                <div class="form-group">
+                    <label for='Contact' class="col-md-6 control-label">Votre nom</label>
+                    <div class="col-md-6">
+                        <input type='text' name='Contact' id='Contact' class="form-control" required/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for='AdresseMail' class="col-md-6 control-label">Votre mail</label>
-                <div class="col-md-6">
-                    <input type='email' name='AdresseMail' id='AdresseMail' class="form-control" required/>
+                <div class="form-group">
+                    <label for='AdresseMail' class="col-md-6 control-label">Votre mail</label>
+                    <div class="col-md-6">
+                        <input type='email' name='AdresseMail' id='AdresseMail' class="form-control" required/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for='Telephone' class="col-md-6 control-label">Votre téléphone</label>
-                <div class="col-md-6">
-                    <input type='tel' name='Telephone' id='Telephone' class="form-control" required/>
+                <div class="form-group">
+                    <label for='Telephone' class="col-md-6 control-label">Votre téléphone</label>
+                    <div class="col-md-6">
+                        <input type='tel' name='Telephone' id='Telephone' class="form-control" required/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for='TerrainSouhaite' class="col-md-6 control-label">Terrain idéalement souhaité</label>
-                <div class="col-md-6">
-                    <select name='TerrainSouhaite[]' id='TerrainSouhaite' class="form-control" multiple required>
-                        <option selected="selected" disabled="disabled" value="">--- Choisir ---</option>
-                        <?php foreach ($result as $unTerrain) : ?>
-                            <option value="<?= $unTerrain ?>"><?= $unTerrain ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                <div class="form-group">
+                    <label for='TerrainSouhaite' class="col-md-6 control-label">Terrain idéalement souhaité</label>
+                    <div class="col-md-6">
+                        <select name='TerrainSouhaite[]' id='TerrainSouhaite' class="form-control" multiple required>
+                            <option selected="selected" disabled="disabled" value="">--- Choisir ---</option>
+                            <?php foreach ($result as $unTerrain) : ?>
+                                <option value="<?= $unTerrain ?>"><?= $unTerrain ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for='NombreDePersonnes' class="col-md-6 control-label">Nombre estimé de personnes <em>(enfants et
-                        adultes)</em></label>
-                <div class="col-md-6">
-                    <input type='number' name='NombreDePersonnes' id='NombreDePersonnes' class="form-control" required/>
+                <div class="form-group">
+                    <label for='NombreDePersonnes' class="col-md-6 control-label">Nombre estimé de personnes <em>(enfants
+                            et
+                            adultes)</em></label>
+                    <div class="col-md-6">
+                        <input type='number' name='NombreDePersonnes' id='NombreDePersonnes' class="form-control"
+                               required/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for='NombreDeTentes' class="col-md-6 control-label">Nombre estimé de tentes</label>
-                <div class="col-md-6">
-                    <input type='number' name='NombreDeTentes' id='NombreDeTentes' class="form-control" required/>
+                <div class="form-group">
+                    <label for='NombreDeTentes' class="col-md-6 control-label">Nombre estimé de tentes</label>
+                    <div class="col-md-6">
+                        <input type='number' name='NombreDeTentes' id='NombreDeTentes' class="form-control" required/>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-4 col-md-6">
-                    <input type='submit' name='envoiMail' value='Envoyer' class="btn submit"/>
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-6">
+                        <input type='submit' name='envoiMail' value='Envoyer' class="btn submit"/>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </fieldset>
+            </form>
+        </fieldset>
     <?php
+    endif;
 }
 // Formulaire de réservation
 if (isset($_POST['envoiMail'])) {
