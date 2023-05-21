@@ -57,12 +57,12 @@ Cliquez sur un terrain pour obtenir ses caractéristiques et des photos.
     <fieldset>
         Les dates de mon camp sont du &nbsp;
         <input type="date" name="dateDeb" id="dateDeb"
-               value="<?= isset($_GET["dateDeb"]) ? $_GET["dateDeb"] : date("Y-m-d") ?>" min="<?= date("Y-m-d") ?>"
+               value="<?= $_GET["dateDeb"] ?? date("Y-m-d") ?>" min="<?= date("Y-m-d") ?>"
                max="<?= date("Y-m-d", time() + 365 * 24 * 60 * 60) ?>"
                onchange="if(document.getElementById('dateFin').value < this.value){let maDate = new Date(this.value);maDate.setDate(maDate.getDate() + 1);document.getElementById('dateFin').value = maDate.toISOString().slice(0, 10)}"/>
         &nbsp;au&nbsp;
         <input type="date" name="dateFin" id="dateFin"
-               value="<?= isset($_GET["dateFin"]) ? $_GET["dateFin"] : date("Y-m-d", time() + 24 * 60 * 60) ?>"
+               value="<?= $_GET["dateFin"] ?? date("Y-m-d", time() + 24 * 60 * 60) ?>"
                min="<?= date("Y-m-d") ?>" max="<?= date("Y-m-d", time() + 365 * 24 * 60 * 60) ?>"/>
         <input name="submit" type="submit" value="Voir les terrains disponibles" class="btn submit"/>
     </fieldset>
@@ -199,7 +199,7 @@ if (isset($_POST['envoiMail'])) {
     $headers = '';
     // Nettoyage & vérification de l'adresse mail
     $email = filter_var($_POST['AdresseMail'], FILTER_VALIDATE_EMAIL);
-    if ($email != FALSE) {
+    if ($email) {
         $headers = "Reply-To: " . $email;
     }
 
