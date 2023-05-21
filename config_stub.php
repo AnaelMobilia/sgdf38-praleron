@@ -36,15 +36,16 @@ define('__FILE_KEY__', '0AoFkkLP2MB8kdFd4bEJ5VzR2RVdBQkVuSW91WE1zZkE');
  */
 // PLANNING
 define('__SHEET_ONGLET_PLANNING__', 'PLANNING');
-define('__SHEET_PLANNING_LIGNE_TERRAINS__', '1');
-// Notation numérique : A => 0, B => 1, ...
-define('__SHEET_PLANNING_COLONNE_DATES__', '0');
-define('__SHEET_PLANNING_PREMIERE_COLONNE_TERRAINS__', '1');
+define('__SHEET_PLANNING_LIGNE_TERRAINS__', 1);
+define('__SHEET_PLANNING_LIGNE_DATES__', __SHEET_PLANNING_LIGNE_TERRAINS__ + 1);
+// Notation numérique : A => 1, B => 2, ...
+define('__SHEET_PLANNING_COLONNE_DATES__', 1);
+define('__SHEET_PLANNING_PREMIERE_COLONNE_TERRAINS__', __SHEET_PLANNING_COLONNE_DATES__ + 1);
 // CONFIGURATION
 define('__SHEET_ONGLET_CONFIG__', 'CONFIGURATION');
-define('__SHEET_CONFIG_LIGNE_INDISPO_DEFAUT__', '2');
-define('__SHEET_CONFIG_LIGNE_DATE_DEB_INDISPO__', '3');
-define('__SHEET_CONFIG_LIGNE_DATE_FIN_INDISPO__', '4');
+define('__SHEET_CONFIG_LIGNE_INDISPO_DEFAUT__', 2);
+define('__SHEET_CONFIG_LIGNE_DATE_DEB_INDISPO__', 3);
+define('__SHEET_CONFIG_LIGNE_DATE_FIN_INDISPO__', 4);
 
 /**
  *  Données calculées automatiquement
@@ -79,5 +80,28 @@ function exception_handler($exception)
     mail(__MAIL_ADMIN__, '[Praleron-Reservation] Erreur rencontrée', $message, $headers);
 }
 set_exception_handler('exception_handler');
+
+/**
+ * Chargement des classes de PhpSpreadsheet
+ */
+spl_autoload_register(function ($class) {
+    // Mettre en minuscule les deux premiers répertoires + ajouter src + passer en chemin linux
+    [$vendor, $project, $namespace] = explode("\\", $class, 3);
+    // Cas particulier pour SimpleCache qui ne respecte pas le formattage normal
+    if(strpos($project, "SimpleCache") !== false) {
+        $project = "simple-cache";
+        $subProject = "";
+    } else {
+        $subProject = $project . "/";
+    }
+
+    $path = strtolower($vendor) . "/" . strtolower($project) . "/src/" . $subProject . str_replace("\\", "/", $namespace);
+    $file = __DIR__ . '/libs/' . $path . '.php';
+
+    // Si le fichier existe...
+    if (file_exists($file)) {
+        require $file;
+    }
+});
 
 require 'functions.php';

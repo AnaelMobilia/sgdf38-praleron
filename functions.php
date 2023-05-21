@@ -18,31 +18,29 @@
  * along with sgdf38-praleron. If not, see <http://www.gnu.org/licenses/>
  */
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 /**
  * Terrains disponibles aux dates fournies
  * @param DateTime $dateDebut Date de début
  * @param DateTime $dateFin Date de fin
  * @return ArrayObject Nom des terrains disponibles
- * @throws PHPExcel_Exception
- * @throws PHPExcel_Reader_Exception
+ * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception|\PhpOffice\PhpSpreadsheet\Exception
+ * @throws Exception
  */
-function getTerrainDispo($dateDebut, $dateFin) {
-    // Chargement PHPExcel
-    require './PHPExcel/PHPExcel.php';
-
+function getTerrainDispo(DateTime $dateDebut, DateTime $dateFin): ArrayObject
+{
     /**
      * Chargement du fichier de données
      */
     // Identification du type du fichier
-    $typeFichier = PHPExcel_IOFactory::identify(__FILE_FQDN__);
-
+    $typeFichier = IOFactory::identify(__FILE_FQDN__);
     // Création d'un objet PHP Excel pour mon type de fichier
-    $objPHPExcel = PHPExcel_IOFactory::createReader($typeFichier);
+    $objPHPExcel = IOFactory::createReader($typeFichier);
     // Je ne veux que les données, pas le formatage
     //$objPHPExcel->setReadDataOnly(true);
     // Chargement du fichier
     $monFichier = $objPHPExcel->load(__FILE_FQDN__);
-
     // Feuille PLANNING
     $lePlanning = $monFichier->setActiveSheetIndexByName(__SHEET_ONGLET_PLANNING__);
     // Feuille CONFIGURATION
@@ -51,7 +49,7 @@ function getTerrainDispo($dateDebut, $dateFin) {
     /**
      * Récupération de la première date dans le fichier
      */
-    $firstDate = $lePlanning->getCellByColumnAndRow(__SHEET_PLANNING_COLONNE_DATES__, __SHEET_PLANNING_LIGNE_DATES__)->getFormattedValue();
+    $firstDate = $lePlanning->getCell([__SHEET_PLANNING_COLONNE_DATES__, __SHEET_PLANNING_LIGNE_DATES__])->getFormattedValue();
     // Formatage pour Datetime (YYYY/MM/DD)
     $premiereDate = new DateTime(substr($firstDate, 6) . substr($firstDate, 2, 4) . substr($firstDate, 0, 2));
 
@@ -68,7 +66,7 @@ function getTerrainDispo($dateDebut, $dateFin) {
     // Première colonne
     $i = __SHEET_PLANNING_PREMIERE_COLONNE_TERRAINS__;
     // Tant que j'ai un nom de terrain...
-    while (($nomLieu = $lePlanning->getCellByColumnAndRow($i, __SHEET_PLANNING_LIGNE_TERRAINS__)->getValue()) !== NULL) {
+    while (($nomLieu = $lePlanning->getCell([$i, __SHEET_PLANNING_LIGNE_TERRAINS__])->getValue()) !== null) {
         // Je le stocke !
         $listeLieux->offsetSet($i, $nomLieu);
         // Et passe à la colonne suivante
@@ -78,7 +76,7 @@ function getTerrainDispo($dateDebut, $dateFin) {
     /**
      * Vérification que les dates demandées sont bien disponibles !
      */
-    if ($lePlanning->getCellByColumnAndRow(__SHEET_PLANNING_COLONNE_DATES__, $ligneFin)->getValue() === NULL) {
+    if ($lePlanning->getCell([__SHEET_PLANNING_COLONNE_DATES__, $ligneFin])->getValue() === null) {
         // Sinon, on trashe !
         $listeLieux = new ArrayObject();
     }
@@ -99,7 +97,7 @@ function getTerrainDispo($dateDebut, $dateFin) {
     // Pour chaque lieu...
     foreach ($listeLieux as $key => $value) {
         // Je regarde s'il est taggué systématiquement indisponible
-        if ($laConfiguration->getCellByColumnAndRow($key, __SHEET_CONFIG_LIGNE_INDISPO_DEFAUT__)->getValue() !== NULL) {
+        if ($laConfiguration->getCell([$key, __SHEET_CONFIG_LIGNE_INDISPO_DEFAUT__])->getValue() !== null) {
             // Si oui, je ne le prends pas !
             $newList->offsetUnset($key);
         }
@@ -114,8 +112,8 @@ function getTerrainDispo($dateDebut, $dateFin) {
     // Pour chaque lieux restant...
     foreach ($listeLieux as $key => $value) {
         // Valeur formattée (date)
-        $debIndispo = $laConfiguration->getCellByColumnAndRow($key, __SHEET_CONFIG_LIGNE_DATE_DEB_INDISPO__)->getFormattedValue();
-        $finIndispo = $laConfiguration->getCellByColumnAndRow($key, __SHEET_CONFIG_LIGNE_DATE_FIN_INDISPO__)->getFormattedValue();
+        $debIndispo = $laConfiguration->getCell([$key, __SHEET_CONFIG_LIGNE_DATE_DEB_INDISPO__])->getFormattedValue();
+        $finIndispo = $laConfiguration->getCell([$key, __SHEET_CONFIG_LIGNE_DATE_FIN_INDISPO__])->getFormattedValue();
 
         // Seulement si on a des valeurs !
         if ($debIndispo !== '' && $finIndispo !== '') {
@@ -180,7 +178,7 @@ function getTerrainDispo($dateDebut, $dateFin) {
         // Je passe chaque date dans l'intervalle demandée
         for ($i = $debutVerif; $i <= $ligneFin; $i++) {
             // Si la cellule contient des données
-            if ($lePlanning->getCellByColumnAndRow($key, $i)->getValue() !== NULL) {
+            if ($lePlanning->getCell([$key, $i])->getValue() !== null) {
                 // Lieu déjà réservé => non disponible !
                 $newList->offsetUnset($key);
                 // Sortie rapide du for
