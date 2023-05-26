@@ -204,7 +204,7 @@ if (isset($_POST['envoiMail'])) {
     }
 
     mail(__MAIL_GESTIONNAIRE__, utf8_decode('Demande de réservation de Praléron'), utf8_decode($corps), $headers);
-    echo "Votre demande a bien été envoyée, nous vous en remercions.<br />L'équipe Praléron.";
+    echo "Votre demande de réservation a bien été transmise, nous vous en remercions !<br />Le responsable de la base va revenir vers vous d'ici quelques jours afin de vous confirmer l'acceptation de votre demande ainsi que le terrain vous étant attribué.<br />L'équipe Praléron.";
 }
 ?>
 </body>
