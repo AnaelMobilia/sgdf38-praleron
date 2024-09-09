@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with sgdf38-praleron. If not, see <http://www.gnu.org/licenses/>
  */
+
 /**
  * @author Anael Mobilia
  * @brief Affichage de la base
@@ -52,6 +53,15 @@ Cliquez sur un terrain pour obtenir ses caractéristiques et des photos.
 <br/>
 <iframe src="https://www.google.com/maps/d/embed?mid=11LLfJuTQQ8zbx_HFWDCfFZ0LHrs"></iframe>
 <br/>
+<?php
+if (
+        (date("m") < 3 && date("d") < 15)
+        || (date("m") > 8)
+) : ?>
+    <div class="alert alert-secondary text-center" role="alert">
+        Les réservations pour l'été prochain ouvriront au 15 mars !
+    </div>
+<?php endif; ?>
 <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="form-inline"
       onsubmit="if(document.getElementById('dateFin').value < document.getElementById('dateDeb').value){alert('La date de fin doit être postérieure à la date de début !');return false;}">
     <fieldset>
