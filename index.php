@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2017-2023 - Anael Mobilia
+ * Copyright 2017-2024 - Anael Mobilia
  *
  * This file is part of sgdf38-praleron.
  *
